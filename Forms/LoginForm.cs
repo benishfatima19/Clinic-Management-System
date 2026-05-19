@@ -58,15 +58,19 @@ namespace Clinic_System.Forms
                 using (SqliteConnection conn = DatabaseHelper.GetConnection())
                 {
                     conn.Open();
-                    string sql = "SELECT COUNT(*) FROM Users WHERE Username=@u AND Password=@p";
+                    // Get stored hashed password for this username
+                    string sql = "SELECT Password FROM Users WHERE Username=@u";
 
                     using (SqliteCommand cmd = new SqliteCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
-                        cmd.Parameters.AddWithValue("@p", password);
+                        string hashedPassword = cmd.ExecuteScalar()?.ToString();
 
-                        int count = Convert.ToInt32(cmd.ExecuteScalar());
-                        return count > 0;
+                        if (hashedPassword == null) return false;
+
+                        // BCrypt.Verify compares entered password with stored hash
+                        // It never decrypts — one-way comparison only
+                        return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
                     }
                 }
             }

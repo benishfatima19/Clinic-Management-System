@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Data.Sqlite;
+using BCrypt.Net;
 
 namespace Clinic_System.Database
 {
@@ -77,16 +78,23 @@ namespace Clinic_System.Database
                         }
                     }
 
-                    // Insert default admin if not exists
-                    string adminSql = @"INSERT OR IGNORE INTO Users 
-                                        (Username, Password) 
-                                        VALUES ('admin', '1234');";
-                    using (SqliteCommand cmd = new SqliteCommand(adminSql, conn))
+                    // Insert default admin if not exists with BCrypt hashed password
+
+                    string checkAdmin = "SELECT COUNT(*) FROM Users WHERE Username='admin'";
+                    using (SqliteCommand cmd = new SqliteCommand(checkAdmin, conn))
                     {
-                        cmd.ExecuteNonQuery();
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                        if (count == 0)
+                        {
+                            string hashedPassword = BCrypt.Net.BCrypt.HashPassword("1234");
+                            string insertAdmin = $"INSERT INTO Users (Username, Password) VALUES ('admin', '{hashedPassword}')";
+                            using (SqliteCommand insertCmd = new SqliteCommand(insertAdmin, conn))
+                                insertCmd.ExecuteNonQuery();
+                        }
                     }
                 }
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Database Error: " + ex.Message, "Error",

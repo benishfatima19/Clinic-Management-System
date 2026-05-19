@@ -43,7 +43,7 @@
             lblTitle.ForeColor = Color.White;
             lblTitle.Location = new Point(125, 36);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(340, 40);
+            lblTitle.Size = new Size(350, 54);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Clinic Management System";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
