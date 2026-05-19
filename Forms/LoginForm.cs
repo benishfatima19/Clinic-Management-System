@@ -18,8 +18,6 @@ namespace Clinic_System.Forms
             InitializeComponent();
         }
 
-
-
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtUsername.Text.Trim();
@@ -51,6 +49,10 @@ namespace Clinic_System.Forms
             }
         }
 
+        /// <summary>
+        /// Validates login by comparing entered password with BCrypt hash stored in database.
+        /// BCrypt.Verify does one-way comparison — password is never decrypted.
+        /// </summary>
         private bool ValidateLogin(string username, string password)
         {
             try

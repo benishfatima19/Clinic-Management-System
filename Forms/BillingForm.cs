@@ -158,7 +158,10 @@ namespace Clinic_System.Forms
 
             ComboItem selectedMedicine = (ComboItem)cmbMedicine.SelectedItem;
 
-            // Check stock
+            // Stock automatically reduces after bill is generated
+            // Prevents overselling medicine that is out of stock
+
+            // Check available stock before adding to bill
             int availableStock = GetMedicineStock(selectedMedicine.Id);
             if (qty > availableStock)
             {

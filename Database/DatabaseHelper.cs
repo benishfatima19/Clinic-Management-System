@@ -14,6 +14,12 @@ namespace Clinic_System.Database
         // ─────────────────────────────────────────
         // 1. CREATE DATABASE AND ALL TABLES
         // ─────────────────────────────────────────
+        /// <summary>
+        /// Initializes SQLite database and creates all tables if they don't exist.
+        /// Inserts default admin user with BCrypt hashed password.
+        /// Called once at application startup from Program.cs
+        /// </summary>
+   
         public static void InitializeDatabase()
         {
             try
@@ -105,6 +111,11 @@ namespace Clinic_System.Database
         // ─────────────────────────────────────────
         // 2. GET CONNECTION (used by other methods)
         // ─────────────────────────────────────────
+        /// <summary>
+        /// Returns a new SQLite connection.
+        /// Used by all forms to connect to the database.
+        /// </summary>
+        
         public static SqliteConnection GetConnection()
         {
             return new SqliteConnection(connectionString);
