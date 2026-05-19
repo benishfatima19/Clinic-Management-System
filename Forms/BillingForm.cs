@@ -14,7 +14,7 @@ namespace Clinic_System.Forms
 {
     public partial class BillingForm : Form
     {
-        // This list holds items added to the bill
+        // Holds medicines added to current bill
         private List<BillItem> billItems = new List<BillItem>();
         private decimal totalAmount = 0;
         public BillingForm()
@@ -23,18 +23,6 @@ namespace Clinic_System.Forms
             LoadPatients();
             LoadMedicines();
             SetupGrid();
-        }
-
-        // ─────────────────────────────────────────
-        // HELPER CLASS FOR BILL ITEMS
-        // ─────────────────────────────────────────
-        private class BillItem
-        {
-            public int MedicineId { get; set; }
-            public string MedicineName { get; set; }
-            public int Quantity { get; set; }
-            public decimal Price { get; set; }
-            public decimal Subtotal => Quantity * Price;
         }
 
         // ─────────────────────────────────────────
@@ -54,35 +42,14 @@ namespace Clinic_System.Forms
         // ─────────────────────────────────────────
         private void LoadPatients()
         {
-            try
-            {
-                cmbPatient.Items.Clear();
-                cmbPatient.Items.Add("-- Select Patient --");
-                cmbPatient.SelectedIndex = 0;
+            cmbPatient.Items.Clear();
+            cmbPatient.Items.Add(new ComboItem(0, "-- Select Patient --"));
+            cmbPatient.SelectedIndex = 0;
 
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = "SELECT Id, Name FROM Patients ORDER BY Name";
-
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            cmbPatient.Items.Add(new ComboItem(
-                                Convert.ToInt32(reader["Id"]),
-                                reader["Name"].ToString()
-                            ));
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading patients: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // PatientRepository handles database — no SQL here!
+            List<Patient> patients = PatientRepository.GetAllPatientsForDropdown();
+            foreach (Patient p in patients)
+                cmbPatient.Items.Add(new ComboItem(p.Id, p.Name));
         }
 
         // ─────────────────────────────────────────
@@ -90,44 +57,20 @@ namespace Clinic_System.Forms
         // ─────────────────────────────────────────
         private void LoadMedicines()
         {
-            try
-            {
-                cmbMedicine.Items.Clear();
-                cmbMedicine.Items.Add("-- Select Medicine --");
-                cmbMedicine.SelectedIndex = 0;
+            cmbMedicine.Items.Clear();
+            cmbMedicine.Items.Add(new ComboItem(0, "-- Select Medicine --", 0));
+            cmbMedicine.SelectedIndex = 0;
 
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    // Only load medicines that are in stock
-                    string sql = "SELECT Id, Name, Price FROM Medicines WHERE Quantity > 0";
-
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            cmbMedicine.Items.Add(new ComboItem(
-                                Convert.ToInt32(reader["Id"]),
-                                reader["Name"].ToString(),
-                                Convert.ToDecimal(reader["Price"])
-                            ));
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading medicines: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // Only load medicines that are in stock
+            List<Medicine> medicines = MedicineRepository.GetMedicinesInStock();
+            foreach (Medicine m in medicines)
+                cmbMedicine.Items.Add(new ComboItem(m.Id, m.Name, m.Price));
         }
         // ─────────────────────────────────────────
         // ADD ITEM TO BILL
         // ─────────────────────────────────────────
         private void btnAddItem_Click(object sender, EventArgs e)
         {
-            // Validations
             if (cmbPatient.SelectedIndex == 0)
             {
                 MessageBox.Show("Please select a patient!", "Warning",
@@ -158,11 +101,8 @@ namespace Clinic_System.Forms
 
             ComboItem selectedMedicine = (ComboItem)cmbMedicine.SelectedItem;
 
-            // Stock automatically reduces after bill is generated
-            // Prevents overselling medicine that is out of stock
-
-            // Check available stock before adding to bill
-            int availableStock = GetMedicineStock(selectedMedicine.Id);
+            // Check stock using MedicineRepository
+            int availableStock = MedicineRepository.GetMedicineStock(selectedMedicine.Id);
             if (qty > availableStock)
             {
                 MessageBox.Show($"Not enough stock! Available: {availableStock}", "Warning",
@@ -170,32 +110,31 @@ namespace Clinic_System.Forms
                 return;
             }
 
-            // Check if medicine already added
+            // Check if medicine already added to bill
             foreach (BillItem existing in billItems)
             {
                 if (existing.MedicineId == selectedMedicine.Id)
                 {
-                    MessageBox.Show("This medicine is already added! Remove it first to change quantity.", "Warning",
+                    MessageBox.Show("This medicine is already added!", "Warning",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
 
-            // Add to list
-            BillItem item = new BillItem
+            // Add to bill items list
+            billItems.Add(new BillItem
             {
                 MedicineId = selectedMedicine.Id,
                 MedicineName = selectedMedicine.Name,
                 Quantity = qty,
                 Price = selectedMedicine.Price
-            };
+            });
 
-            billItems.Add(item);
             RefreshGrid();
-
             txtQty.Clear();
             cmbMedicine.SelectedIndex = 0;
         }
+        
         // ─────────────────────────────────────────
         // REMOVE ITEM FROM BILL
         // ─────────────────────────────────────────
@@ -226,7 +165,7 @@ namespace Clinic_System.Forms
 
             if (billItems.Count == 0)
             {
-                MessageBox.Show("Please add at least one medicine to the bill!", "Warning",
+                MessageBox.Show("Please add at least one medicine!", "Warning",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -237,77 +176,23 @@ namespace Clinic_System.Forms
 
             if (result == DialogResult.Yes)
             {
-                try
+                ComboItem selectedPatient = (ComboItem)cmbPatient.SelectedItem;
+
+                // BillRepository handles all database logic — no SQL here!
+                int billId = BillRepository.GenerateBill(
+                    selectedPatient.Id,
+                    totalAmount,
+                    billItems
+                );
+
+                if (billId > 0)
                 {
-                    int billId = 0;
-                    ComboItem selectedPatient = (ComboItem)cmbPatient.SelectedItem;
-
-                    using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                    {
-                        conn.Open();
-
-                        // Save bill - two separate statements
-                        string insertBillSql = @"INSERT INTO Bills (PatientId, Date, Total) 
-                          VALUES (@patientId, @date, @total)";
-
-                        using (SqliteCommand cmd = new SqliteCommand(insertBillSql, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@patientId", selectedPatient.Id);
-                            cmd.Parameters.AddWithValue("@date", DateTime.Now.ToString("yyyy-MM-dd"));
-                            cmd.Parameters.AddWithValue("@total", totalAmount);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        // Get the bill ID that was just created
-
-                        string getIdSql = "SELECT last_insert_rowid()";
-                        using (SqliteCommand cmd = new SqliteCommand(getIdSql, conn))
-                        {
-                            billId = Convert.ToInt32(cmd.ExecuteScalar());
-                        }
-
-                        // Save each bill item and reduce stock
-                        foreach (BillItem item in billItems)
-                        {
-                            // Save bill item
-                            string itemSql = @"INSERT INTO BillItems 
-                                               (BillId, MedicineId, Quantity, Price) 
-                                               VALUES (@billId, @medicineId, @qty, @price)";
-
-                            using (SqliteCommand cmd = new SqliteCommand(itemSql, conn))
-                            {
-                                cmd.Parameters.AddWithValue("@billId", billId);
-                                cmd.Parameters.AddWithValue("@medicineId", item.MedicineId);
-                                cmd.Parameters.AddWithValue("@qty", item.Quantity);
-                                cmd.Parameters.AddWithValue("@price", item.Price);
-                                cmd.ExecuteNonQuery();
-                            }
-
-                            // Reduce medicine stock
-                            string stockSql = @"UPDATE Medicines 
-                                                SET Quantity = Quantity - @qty 
-                                                WHERE Id = @id";
-
-                            using (SqliteCommand cmd = new SqliteCommand(stockSql, conn))
-                            {
-                                cmd.Parameters.AddWithValue("@qty", item.Quantity);
-                                cmd.Parameters.AddWithValue("@id", item.MedicineId);
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-
                     MessageBox.Show(
                         $"Bill generated successfully!\nBill ID: {billId}\nTotal: Rs. {totalAmount:F2}",
                         "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     ClearAll();
-                    LoadMedicines(); // Reload to reflect updated stock
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error generating bill: " + ex.Message, "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    LoadMedicines(); // Refresh to show updated stock
                 }
             }
         }
@@ -340,25 +225,6 @@ namespace Clinic_System.Forms
             lblTotalValue.Text = $"Rs. {totalAmount:F2}";
         }
 
-        private int GetMedicineStock(int medicineId)
-        {
-            try
-            {
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = "SELECT Quantity FROM Medicines WHERE Id=@id";
-
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@id", medicineId);
-                        return Convert.ToInt32(cmd.ExecuteScalar());
-                    }
-                }
-            }
-            catch { return 0; }
-        }
-
         private void ClearAll()
         {
             billItems.Clear();
@@ -369,13 +235,15 @@ namespace Clinic_System.Forms
             cmbMedicine.SelectedIndex = 0;
             txtQty.Clear();
         }
-
-      
     }
 
     // ─────────────────────────────────────────
     // HELPER CLASS FOR COMBOBOX ITEMS
     // ─────────────────────────────────────────
+    /// <summary>
+    /// Helper class used by ComboBoxes in Billing form.
+    /// Stores Id, Name and Price for each dropdown item.
+    /// </summary>
     public class ComboItem
     {
         public int Id { get; set; }
@@ -391,7 +259,7 @@ namespace Clinic_System.Forms
 
         public override string ToString()
         {
-            return Name; // This is what shows in the dropdown
+            return Name;
         }
     }
 }

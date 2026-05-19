@@ -26,40 +26,32 @@ namespace Clinic_System.Forms
         {
             try
             {
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
+                // Show logged in user
+                lblWelcome.Text = $"Welcome, {LoginForm.LoggedInUser}!";
 
-                    // Total medicines
-                    string medSql = "SELECT COUNT(*) FROM Medicines";
-                    using (SqliteCommand cmd = new SqliteCommand(medSql, conn))
-                        lblMedicineCount.Text = "💊 Medicines: " + cmd.ExecuteScalar().ToString();
+                // Total medicines — from MedicineRepository
+                var medicines = MedicineRepository.GetAllMedicines();
+                lblMedicineCount.Text = $"💊 Medicines: {medicines.Count}";
 
-                    // Total patients
-                    string patSql = "SELECT COUNT(*) FROM Patients";
-                    using (SqliteCommand cmd = new SqliteCommand(patSql, conn))
-                        lblPatientCount.Text = "👤 Patients: " + cmd.ExecuteScalar().ToString();
+                // Total patients — from PatientRepository
+                var patients = PatientRepository.GetAllPatients();
+                lblPatientCount.Text = $"👤 Patients: {patients.Count}";
 
-                    // Bills generated today
-                    string billSql = "SELECT COUNT(*) FROM Bills WHERE Date=@date";
-                    using (SqliteCommand cmd = new SqliteCommand(billSql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@date", DateTime.Now.ToString("yyyy-MM-dd"));
-                        lblBillCount.Text = "🧾 Bills Today: " + cmd.ExecuteScalar().ToString();
-                    }
+                // Bills today — from BillRepository
+                int todayBills = BillRepository.GetTodayBillsCount();
+                lblBillCount.Text = $"🧾 Bills Today: {todayBills}";
 
-                    // Low stock medicines (quantity < 10)
-                    string lowSql = "SELECT COUNT(*) FROM Medicines WHERE Quantity < 10";
-                    using (SqliteCommand cmd = new SqliteCommand(lowSql, conn))
-                    {
-                        int lowCount = Convert.ToInt32(cmd.ExecuteScalar());
-                        lblLowStock.Text = "⚠️ Low Stock: " + lowCount;
-                        // Make it red if there are low stock items
-                        lblLowStock.ForeColor = lowCount > 0 ?
-                            System.Drawing.Color.Red :
-                            System.Drawing.Color.Green;
-                    }
-                }
+                // Total revenue — from BillRepository
+                decimal revenue = BillRepository.GetTotalRevenue();
+                lblRevenue.Text = $"💰 Revenue: Rs. {revenue:F2}";
+
+                // Low stock count — from MedicineRepository
+                int lowStock = 0;
+                foreach (var m in medicines)
+                    if (m.Quantity < 10) lowStock++;
+
+                lblLowStock.Text = $"⚠️ Low Stock: {lowStock}";
+                lblLowStock.ForeColor = lowStock > 0 ? Color.Red : Color.Green;
             }
             catch (Exception ex)
             {
@@ -104,5 +96,7 @@ namespace Clinic_System.Forms
                 this.Close();
             }
         }
+
+        
     }
 }

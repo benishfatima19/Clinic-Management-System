@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Data.Sqlite;
 using Clinic_System.Database;
+using Clinic_System.Models;
 
 namespace Clinic_System.Forms
 {
@@ -21,59 +22,34 @@ namespace Clinic_System.Forms
         // ─────────────────────────────────────────
         // BILLING REPORT
         // ─────────────────────────────────────────
+
         private void LoadBillingReport(string search = "")
         {
-            try
+            dgvBills.Rows.Clear();
+            dgvBills.Columns.Clear();
+
+            dgvBills.Columns.Add("BillId", "Bill ID");
+            dgvBills.Columns.Add("Patient", "Patient Name");
+            dgvBills.Columns.Add("Date", "Date");
+            dgvBills.Columns.Add("Total", "Total (Rs.)");
+
+            // BillRepository handles all SQL — no SQL here!
+            List<Bill> bills = BillRepository.GetAllBills(search);
+
+            decimal totalRevenue = 0;
+            foreach (Bill b in bills)
             {
-                dgvBills.Rows.Clear();
-                dgvBills.Columns.Clear();
-
-                dgvBills.Columns.Add("BillId", "Bill ID");
-                dgvBills.Columns.Add("Patient", "Patient Name");
-                dgvBills.Columns.Add("Date", "Date");
-                dgvBills.Columns.Add("Total", "Total (Rs.)");
-
-                decimal totalRevenue = 0;
-
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = @"SELECT b.Id, p.Name, b.Date, b.Total 
-                                   FROM Bills b 
-                                   JOIN Patients p ON b.PatientId = p.Id
-                                   WHERE p.Name LIKE @search
-                                   ORDER BY b.Date DESC";
-
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@search", "%" + search + "%");
-
-                        using (SqliteDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                decimal total = Convert.ToDecimal(reader["Total"]);
-                                totalRevenue += total;
-
-                                dgvBills.Rows.Add(
-                                    reader["Id"].ToString(),
-                                    reader["Name"].ToString(),
-                                    reader["Date"].ToString(),
-                                    $"Rs. {total:F2}"
-                                );
-                            }
-                        }
-                    }
-                }
-
-                lblTotalRevenue.Text = $"Total Revenue: Rs. {totalRevenue:F2}";
-                lblTotalRevenue.ForeColor = Color.Green;
+                dgvBills.Rows.Add(
+                    b.Id,
+                    b.PatientName,
+                    b.Date,
+                    $"Rs. {b.Total:F2}"
+                );
+                totalRevenue += b.Total;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading billing report: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+
+            lblTotalRevenue.Text = $"Total Revenue: Rs. {totalRevenue:F2}";
+            lblTotalRevenue.ForeColor = Color.Green;
         }
 
         // ─────────────────────────────────────────
@@ -81,56 +57,41 @@ namespace Clinic_System.Forms
         // ─────────────────────────────────────────
         private void LoadInventoryReport()
         {
-            try
+            dgvInventory.Rows.Clear();
+            dgvInventory.Columns.Clear();
+
+            dgvInventory.Columns.Add("Name", "Medicine Name");
+            dgvInventory.Columns.Add("Quantity", "Current Stock");
+            dgvInventory.Columns.Add("Price", "Price (Rs.)");
+            dgvInventory.Columns.Add("Expiry", "Expiry Date");
+            dgvInventory.Columns.Add("Status", "Status");
+
+            // MedicineRepository handles all SQL — no SQL here!
+            List<Medicine> medicines = MedicineRepository.GetAllMedicines();
+
+            foreach (Medicine m in medicines)
             {
-                dgvInventory.Rows.Clear();
-                dgvInventory.Columns.Clear();
+                string status = m.Quantity == 0 ? "Out of Stock" :
+                                m.Quantity < 10 ? "Low Stock" : "In Stock";
 
-                dgvInventory.Columns.Add("Name", "Medicine Name");
-                dgvInventory.Columns.Add("Quantity", "Current Stock");
-                dgvInventory.Columns.Add("Price", "Price (Rs.)");
-                dgvInventory.Columns.Add("Expiry", "Expiry Date");
-                dgvInventory.Columns.Add("Status", "Status");
+                int rowIndex = dgvInventory.Rows.Add(
+                    m.Name,
+                    m.Quantity,
+                    $"Rs. {m.Price:F2}",
+                    m.ExpiryDate,
+                    status
+                );
 
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = "SELECT * FROM Medicines ORDER BY Quantity ASC";
-
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int qty = Convert.ToInt32(reader["Quantity"]);
-                            string status = qty == 0 ? "Out of Stock" :
-                                           qty < 10 ? "Low Stock" : "In Stock";
-
-                            int rowIndex = dgvInventory.Rows.Add(
-                                reader["Name"].ToString(),
-                                qty.ToString(),
-                                $"Rs. {reader["Price"]}",
-                                reader["ExpiryDate"].ToString(),
-                                status
-                            );
-
-                            // Color code the rows
-                            if (qty == 0)
-                                dgvInventory.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightCoral;
-                            else if (qty < 10)
-                                dgvInventory.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightYellow;
-                            else
-                                dgvInventory.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading inventory report: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Color code rows by stock status
+                if (m.Quantity == 0)
+                    dgvInventory.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightCoral;
+                else if (m.Quantity < 10)
+                    dgvInventory.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightYellow;
+                else
+                    dgvInventory.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
             }
         }
+
         // ─────────────────────────────────────────
         // SEARCH BILLS
         // ─────────────────────────────────────────
@@ -146,14 +107,14 @@ namespace Clinic_System.Forms
         {
             txtBillSearch.Clear();
             LoadBillingReport();
-            MessageBox.Show("Billing report refreshed!", "Success",
+            MessageBox.Show("Report refreshed!", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void btnRefreshInventory_Click(object sender, EventArgs e)
         {
             LoadInventoryReport();
-            MessageBox.Show("Inventory report refreshed!", "Success",
+            MessageBox.Show("Inventory refreshed!", "Success",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }

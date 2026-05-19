@@ -38,6 +38,7 @@
             lblPatientCount = new Label();
             lblBillCount = new Label();
             lblLowStock = new Label();
+            lblRevenue = new Label();
             SuspendLayout();
             // 
             // lblWelcome
@@ -58,7 +59,7 @@
             btnMedicines.FlatStyle = FlatStyle.Flat;
             btnMedicines.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
             btnMedicines.ForeColor = Color.White;
-            btnMedicines.Location = new Point(112, 234);
+            btnMedicines.Location = new Point(112, 273);
             btnMedicines.Name = "btnMedicines";
             btnMedicines.Size = new Size(200, 94);
             btnMedicines.TabIndex = 1;
@@ -73,7 +74,7 @@
             btnPateints.FlatStyle = FlatStyle.Flat;
             btnPateints.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
             btnPateints.ForeColor = Color.White;
-            btnPateints.Location = new Point(439, 234);
+            btnPateints.Location = new Point(432, 273);
             btnPateints.Name = "btnPateints";
             btnPateints.Size = new Size(200, 94);
             btnPateints.TabIndex = 2;
@@ -88,7 +89,7 @@
             btnBilling.FlatStyle = FlatStyle.Flat;
             btnBilling.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
             btnBilling.ForeColor = Color.White;
-            btnBilling.Location = new Point(44, 353);
+            btnBilling.Location = new Point(44, 409);
             btnBilling.Name = "btnBilling";
             btnBilling.Size = new Size(200, 94);
             btnBilling.TabIndex = 3;
@@ -103,7 +104,7 @@
             btnReports.FlatStyle = FlatStyle.Flat;
             btnReports.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
             btnReports.ForeColor = Color.White;
-            btnReports.Location = new Point(294, 353);
+            btnReports.Location = new Point(281, 409);
             btnReports.Name = "btnReports";
             btnReports.Size = new Size(200, 94);
             btnReports.TabIndex = 4;
@@ -118,7 +119,7 @@
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(540, 353);
+            btnLogout.Location = new Point(529, 398);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(200, 94);
             btnLogout.TabIndex = 5;
@@ -131,7 +132,7 @@
             lblMedicineCount.AutoSize = true;
             lblMedicineCount.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblMedicineCount.ForeColor = Color.White;
-            lblMedicineCount.Location = new Point(77, 124);
+            lblMedicineCount.Location = new Point(12, 124);
             lblMedicineCount.Name = "lblMedicineCount";
             lblMedicineCount.Size = new Size(143, 30);
             lblMedicineCount.TabIndex = 6;
@@ -142,18 +143,19 @@
             lblPatientCount.AutoSize = true;
             lblPatientCount.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblPatientCount.ForeColor = Color.White;
-            lblPatientCount.Location = new Point(258, 124);
+            lblPatientCount.Location = new Point(190, 124);
             lblPatientCount.Name = "lblPatientCount";
             lblPatientCount.Size = new Size(122, 30);
             lblPatientCount.TabIndex = 7;
             lblPatientCount.Text = "Patients: 0";
+            
             // 
             // lblBillCount
             // 
             lblBillCount.AutoSize = true;
             lblBillCount.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblBillCount.ForeColor = Color.White;
-            lblBillCount.Location = new Point(414, 124);
+            lblBillCount.Location = new Point(382, 124);
             lblBillCount.Name = "lblBillCount";
             lblBillCount.Size = new Size(148, 30);
             lblBillCount.TabIndex = 8;
@@ -164,18 +166,30 @@
             lblLowStock.AutoSize = true;
             lblLowStock.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblLowStock.ForeColor = Color.White;
-            lblLowStock.Location = new Point(593, 124);
+            lblLowStock.Location = new Point(574, 124);
             lblLowStock.Name = "lblLowStock";
             lblLowStock.Size = new Size(143, 30);
             lblLowStock.TabIndex = 9;
             lblLowStock.Text = "Low Stock: 0";
+            // 
+            // lblRevenue
+            // 
+            lblRevenue.AutoSize = true;
+            lblRevenue.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblRevenue.ForeColor = Color.White;
+            lblRevenue.Location = new Point(291, 200);
+            lblRevenue.Name = "lblRevenue";
+            lblRevenue.Size = new Size(161, 30);
+            lblRevenue.TabIndex = 10;
+            lblRevenue.Text = "Revenue: Rs. 0";
             // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(27, 79, 114);
-            ClientSize = new Size(778, 464);
+            ClientSize = new Size(778, 533);
+            Controls.Add(lblRevenue);
             Controls.Add(lblLowStock);
             Controls.Add(lblBillCount);
             Controls.Add(lblPatientCount);
@@ -207,5 +221,6 @@
         private Label lblPatientCount;
         private Label lblBillCount;
         private Label lblLowStock;
+        private Label lblRevenue;
     }
 }
