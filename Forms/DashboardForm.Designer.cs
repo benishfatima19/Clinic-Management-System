@@ -42,102 +42,131 @@
             // 
             // lblWelcome
             // 
-            lblWelcome.AutoSize = true;
-            lblWelcome.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblWelcome.Location = new Point(258, 27);
+            lblWelcome.Font = new Font("Segoe UI", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblWelcome.ForeColor = Color.White;
+            lblWelcome.Location = new Point(26, 22);
             lblWelcome.Name = "lblWelcome";
-            lblWelcome.Size = new Size(251, 38);
+            lblWelcome.Size = new Size(740, 50);
             lblWelcome.TabIndex = 0;
-            lblWelcome.Text = "Welcome, Admin!";
+            lblWelcome.Text = "Clinic Management System";
+            lblWelcome.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnMedicines
             // 
+            btnMedicines.BackColor = Color.FromArgb(41, 128, 185);
+            btnMedicines.Cursor = Cursors.Hand;
+            btnMedicines.FlatStyle = FlatStyle.Flat;
             btnMedicines.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            btnMedicines.ForeColor = Color.White;
             btnMedicines.Location = new Point(112, 234);
             btnMedicines.Name = "btnMedicines";
-            btnMedicines.Size = new Size(238, 60);
+            btnMedicines.Size = new Size(200, 94);
             btnMedicines.TabIndex = 1;
             btnMedicines.Text = "Medicine Inventory";
-            btnMedicines.UseVisualStyleBackColor = true;
+            btnMedicines.UseVisualStyleBackColor = false;
             btnMedicines.Click += btnMedicines_Click;
             // 
             // btnPateints
             // 
+            btnPateints.BackColor = Color.FromArgb(39, 174, 96);
+            btnPateints.Cursor = Cursors.Hand;
+            btnPateints.FlatStyle = FlatStyle.Flat;
             btnPateints.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            btnPateints.ForeColor = Color.White;
             btnPateints.Location = new Point(439, 234);
             btnPateints.Name = "btnPateints";
-            btnPateints.Size = new Size(238, 60);
+            btnPateints.Size = new Size(200, 94);
             btnPateints.TabIndex = 2;
             btnPateints.Text = "Patient Management";
-            btnPateints.UseVisualStyleBackColor = true;
+            btnPateints.UseVisualStyleBackColor = false;
             btnPateints.Click += btnPateints_Click;
             // 
             // btnBilling
             // 
+            btnBilling.BackColor = Color.FromArgb(142, 68, 173);
+            btnBilling.Cursor = Cursors.Hand;
+            btnBilling.FlatStyle = FlatStyle.Flat;
             btnBilling.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            btnBilling.ForeColor = Color.White;
             btnBilling.Location = new Point(44, 353);
             btnBilling.Name = "btnBilling";
-            btnBilling.Size = new Size(223, 60);
+            btnBilling.Size = new Size(200, 94);
             btnBilling.TabIndex = 3;
             btnBilling.Text = "Billing";
-            btnBilling.UseVisualStyleBackColor = true;
+            btnBilling.UseVisualStyleBackColor = false;
             btnBilling.Click += btnBilling_Click;
             // 
             // btnReports
             // 
+            btnReports.BackColor = Color.FromArgb(243, 156, 18);
+            btnReports.Cursor = Cursors.Hand;
+            btnReports.FlatStyle = FlatStyle.Flat;
             btnReports.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            btnReports.ForeColor = Color.White;
             btnReports.Location = new Point(294, 353);
             btnReports.Name = "btnReports";
-            btnReports.Size = new Size(223, 60);
+            btnReports.Size = new Size(200, 94);
             btnReports.TabIndex = 4;
             btnReports.Text = "Reports";
-            btnReports.UseVisualStyleBackColor = true;
+            btnReports.UseVisualStyleBackColor = false;
             btnReports.Click += btnReports_Click;
             // 
             // btnLogout
             // 
+            btnLogout.BackColor = Color.FromArgb(231, 76, 60);
+            btnLogout.Cursor = Cursors.Hand;
+            btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+            btnLogout.ForeColor = Color.White;
             btnLogout.Location = new Point(540, 353);
             btnLogout.Name = "btnLogout";
-            btnLogout.Size = new Size(223, 60);
+            btnLogout.Size = new Size(200, 94);
             btnLogout.TabIndex = 5;
             btnLogout.Text = "Logout";
-            btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.UseVisualStyleBackColor = false;
             btnLogout.Click += btnLogout_Click;
             // 
             // lblMedicineCount
             // 
             lblMedicineCount.AutoSize = true;
+            lblMedicineCount.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMedicineCount.ForeColor = Color.White;
             lblMedicineCount.Location = new Point(77, 124);
             lblMedicineCount.Name = "lblMedicineCount";
-            lblMedicineCount.Size = new Size(110, 25);
+            lblMedicineCount.Size = new Size(143, 30);
             lblMedicineCount.TabIndex = 6;
             lblMedicineCount.Text = "Medicines: 0";
             // 
             // lblPatientCount
             // 
             lblPatientCount.AutoSize = true;
+            lblPatientCount.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPatientCount.ForeColor = Color.White;
             lblPatientCount.Location = new Point(258, 124);
             lblPatientCount.Name = "lblPatientCount";
-            lblPatientCount.Size = new Size(92, 25);
+            lblPatientCount.Size = new Size(122, 30);
             lblPatientCount.TabIndex = 7;
             lblPatientCount.Text = "Patients: 0";
             // 
             // lblBillCount
             // 
             lblBillCount.AutoSize = true;
+            lblBillCount.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblBillCount.ForeColor = Color.White;
             lblBillCount.Location = new Point(414, 124);
             lblBillCount.Name = "lblBillCount";
-            lblBillCount.Size = new Size(113, 25);
+            lblBillCount.Size = new Size(148, 30);
             lblBillCount.TabIndex = 8;
             lblBillCount.Text = "Bills Today: 0";
             // 
             // lblLowStock
             // 
             lblLowStock.AutoSize = true;
+            lblLowStock.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblLowStock.ForeColor = Color.White;
             lblLowStock.Location = new Point(593, 124);
             lblLowStock.Name = "lblLowStock";
-            lblLowStock.Size = new Size(111, 25);
+            lblLowStock.Size = new Size(143, 30);
             lblLowStock.TabIndex = 9;
             lblLowStock.Text = "Low Stock: 0";
             // 
@@ -145,7 +174,8 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackColor = Color.FromArgb(27, 79, 114);
+            ClientSize = new Size(778, 464);
             Controls.Add(lblLowStock);
             Controls.Add(lblBillCount);
             Controls.Add(lblPatientCount);

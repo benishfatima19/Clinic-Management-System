@@ -259,7 +259,7 @@ namespace Clinic_System.Forms
                         }
 
                         // Get the bill ID that was just created
-                       
+
                         string getIdSql = "SELECT last_insert_rowid()";
                         using (SqliteCommand cmd = new SqliteCommand(getIdSql, conn))
                         {
@@ -369,6 +369,8 @@ namespace Clinic_System.Forms
             cmbMedicine.SelectedIndex = 0;
             txtQty.Clear();
         }
+
+      
     }
 
     // ─────────────────────────────────────────

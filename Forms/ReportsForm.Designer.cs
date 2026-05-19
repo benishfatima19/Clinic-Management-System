@@ -28,6 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
             lblTitle = new Label();
             tabControl1 = new TabControl();
             tabBilling = new TabPage();
@@ -49,17 +53,22 @@
             // 
             // lblTitle
             // 
-            lblTitle.AutoSize = true;
-            lblTitle.Location = new Point(377, 35);
+            lblTitle.BackColor = Color.FromArgb(27, 79, 114);
+            lblTitle.Dock = DockStyle.Top;
+            lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitle.ForeColor = Color.White;
+            lblTitle.Location = new Point(0, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(73, 25);
+            lblTitle.Size = new Size(878, 60);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Reports";
+            lblTitle.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tabControl1
             // 
             tabControl1.Controls.Add(tabBilling);
             tabControl1.Controls.Add(tabInventory);
+            tabControl1.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             tabControl1.Location = new Point(0, 141);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
@@ -73,10 +82,11 @@
             tabBilling.Controls.Add(btnRefreshBills);
             tabBilling.Controls.Add(txtBillSearch);
             tabBilling.Controls.Add(lblBillSearch);
-            tabBilling.Location = new Point(4, 34);
+            tabBilling.ForeColor = Color.FromArgb(27, 79, 114);
+            tabBilling.Location = new Point(4, 37);
             tabBilling.Name = "tabBilling";
             tabBilling.Padding = new Padding(3);
-            tabBilling.Size = new Size(871, 414);
+            tabBilling.Size = new Size(871, 411);
             tabBilling.TabIndex = 0;
             tabBilling.Text = "Billing Report";
             tabBilling.UseVisualStyleBackColor = true;
@@ -84,10 +94,23 @@
             // dgvBills
             // 
             dgvBills.AllowUserToAddRows = false;
+            dataGridViewCellStyle7.BackColor = Color.FromArgb(214, 234, 248);
+            dgvBills.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dgvBills.BackgroundColor = Color.White;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = Color.FromArgb(27, 79, 114);
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle8.ForeColor = Color.White;
+            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            dgvBills.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             dgvBills.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvBills.Location = new Point(13, 136);
+            dgvBills.EnableHeadersVisualStyles = false;
+            dgvBills.Location = new Point(6, 124);
             dgvBills.Name = "dgvBills";
             dgvBills.ReadOnly = true;
+            dgvBills.RowHeadersVisible = false;
             dgvBills.RowHeadersWidth = 62;
             dgvBills.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvBills.Size = new Size(862, 246);
@@ -96,36 +119,45 @@
             // lblTotalRevenue
             // 
             lblTotalRevenue.AutoSize = true;
-            lblTotalRevenue.Location = new Point(674, 385);
+            lblTotalRevenue.Location = new Point(617, 373);
             lblTotalRevenue.Name = "lblTotalRevenue";
-            lblTotalRevenue.Size = new Size(191, 25);
+            lblTotalRevenue.Size = new Size(231, 28);
             lblTotalRevenue.TabIndex = 3;
             lblTotalRevenue.Text = "Total Revenue: Rs. 0.00";
             // 
             // btnRefreshBills
             // 
-            btnRefreshBills.Location = new Point(681, 17);
+            btnRefreshBills.BackColor = Color.FromArgb(243, 156, 18);
+            btnRefreshBills.Cursor = Cursors.Hand;
+            btnRefreshBills.FlatStyle = FlatStyle.Flat;
+            btnRefreshBills.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRefreshBills.ForeColor = Color.White;
+            btnRefreshBills.Location = new Point(683, 17);
             btnRefreshBills.Name = "btnRefreshBills";
-            btnRefreshBills.Size = new Size(112, 34);
+            btnRefreshBills.Size = new Size(117, 43);
             btnRefreshBills.TabIndex = 2;
             btnRefreshBills.Text = "Refresh";
-            btnRefreshBills.UseVisualStyleBackColor = true;
+            btnRefreshBills.UseVisualStyleBackColor = false;
             btnRefreshBills.Click += btnRefreshBills_Click;
             // 
             // txtBillSearch
             // 
+            txtBillSearch.BorderStyle = BorderStyle.FixedSingle;
+            txtBillSearch.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtBillSearch.Location = new Point(318, 17);
             txtBillSearch.Name = "txtBillSearch";
-            txtBillSearch.Size = new Size(259, 31);
+            txtBillSearch.Size = new Size(259, 34);
             txtBillSearch.TabIndex = 1;
             txtBillSearch.TextChanged += txtBillSearch_TextChanged;
             // 
             // lblBillSearch
             // 
             lblBillSearch.AutoSize = true;
-            lblBillSearch.Location = new Point(130, 17);
+            lblBillSearch.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblBillSearch.ForeColor = Color.FromArgb(27, 79, 114);
+            lblBillSearch.Location = new Point(92, 20);
             lblBillSearch.Name = "lblBillSearch";
-            lblBillSearch.Size = new Size(151, 25);
+            lblBillSearch.Size = new Size(183, 28);
             lblBillSearch.TabIndex = 0;
             lblBillSearch.Text = "Search by Patient:";
             // 
@@ -134,31 +166,50 @@
             tabInventory.Controls.Add(btnRefreshInventory);
             tabInventory.Controls.Add(dgvInventory);
             tabInventory.Controls.Add(lblLowStock);
-            tabInventory.Location = new Point(4, 34);
+            tabInventory.ForeColor = Color.FromArgb(27, 79, 114);
+            tabInventory.Location = new Point(4, 37);
             tabInventory.Name = "tabInventory";
             tabInventory.Padding = new Padding(3);
-            tabInventory.Size = new Size(871, 414);
+            tabInventory.Size = new Size(871, 411);
             tabInventory.TabIndex = 1;
             tabInventory.Text = "Inventory Report";
             tabInventory.UseVisualStyleBackColor = true;
             // 
             // btnRefreshInventory
             // 
-            btnRefreshInventory.Location = new Point(732, 26);
+            btnRefreshInventory.BackColor = Color.FromArgb(243, 156, 18);
+            btnRefreshInventory.Cursor = Cursors.Hand;
+            btnRefreshInventory.FlatStyle = FlatStyle.Flat;
+            btnRefreshInventory.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnRefreshInventory.ForeColor = Color.White;
+            btnRefreshInventory.Location = new Point(704, 26);
             btnRefreshInventory.Name = "btnRefreshInventory";
-            btnRefreshInventory.Size = new Size(112, 34);
+            btnRefreshInventory.Size = new Size(119, 49);
             btnRefreshInventory.TabIndex = 2;
             btnRefreshInventory.Text = "Refresh";
-            btnRefreshInventory.UseVisualStyleBackColor = true;
+            btnRefreshInventory.UseVisualStyleBackColor = false;
             btnRefreshInventory.Click += btnRefreshInventory_Click;
             // 
             // dgvInventory
             // 
             dgvInventory.AllowUserToAddRows = false;
+            dataGridViewCellStyle5.BackColor = Color.FromArgb(214, 234, 248);
+            dgvInventory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dgvInventory.BackgroundColor = Color.White;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = Color.FromArgb(27, 79, 114);
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle6.ForeColor = Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            dgvInventory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvInventory.Location = new Point(6, 117);
+            dgvInventory.EnableHeadersVisualStyles = false;
+            dgvInventory.Location = new Point(3, 113);
             dgvInventory.Name = "dgvInventory";
             dgvInventory.ReadOnly = true;
+            dgvInventory.RowHeadersVisible = false;
             dgvInventory.RowHeadersWidth = 62;
             dgvInventory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvInventory.Size = new Size(859, 291);
@@ -167,9 +218,11 @@
             // lblLowStock
             // 
             lblLowStock.AutoSize = true;
+            lblLowStock.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblLowStock.ForeColor = Color.FromArgb(27, 79, 114);
             lblLowStock.Location = new Point(22, 26);
             lblLowStock.Name = "lblLowStock";
-            lblLowStock.Size = new Size(261, 25);
+            lblLowStock.Size = new Size(309, 28);
             lblLowStock.TabIndex = 0;
             lblLowStock.Text = "⚠️ Low Stock Items (Qty < 10):";
             // 
@@ -177,6 +230,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(235, 245, 251);
             ClientSize = new Size(878, 594);
             Controls.Add(tabControl1);
             Controls.Add(lblTitle);
@@ -193,7 +247,6 @@
             tabInventory.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
