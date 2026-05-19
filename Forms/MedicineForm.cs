@@ -25,50 +25,29 @@ namespace Clinic_System.Forms
         // ─────────────────────────────────────────
         private void LoadMedicines(string search = "")
         {
-            try
+            dgvMedicines.Rows.Clear();
+            dgvMedicines.Columns.Clear();
+
+            dgvMedicines.Columns.Add("Id", "ID");
+            dgvMedicines.Columns.Add("Name", "Medicine Name");
+            dgvMedicines.Columns.Add("Quantity", "Quantity");
+            dgvMedicines.Columns.Add("Price", "Price (Rs.)");
+            dgvMedicines.Columns.Add("Expiry", "Expiry Date");
+
+            dgvMedicines.Columns["Id"].Visible = false;
+
+            // All data comes from MedicineRepository — no SQL here!
+            List<Medicine> medicines = MedicineRepository.GetAllMedicines(search);
+
+            foreach (Medicine m in medicines)
             {
-                dgvMedicines.Rows.Clear();
-                dgvMedicines.Columns.Clear();
-
-                // Add columns
-                dgvMedicines.Columns.Add("Id", "ID");
-                dgvMedicines.Columns.Add("Name", "Medicine Name");
-                dgvMedicines.Columns.Add("Quantity", "Quantity");
-                dgvMedicines.Columns.Add("Price", "Price (Rs.)");
-                dgvMedicines.Columns.Add("Expiry", "Expiry Date");
-
-                // Hide ID column
-                dgvMedicines.Columns["Id"].Visible = false;
-
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = "SELECT * FROM Medicines WHERE Name LIKE @search";
-
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@search", "%" + search + "%");
-
-                        using (SqliteDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                dgvMedicines.Rows.Add(
-                                    reader["Id"].ToString(),
-                                    reader["Name"].ToString(),
-                                    reader["Quantity"].ToString(),
-                                    reader["Price"].ToString(),
-                                    reader["ExpiryDate"].ToString()
-                                );
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading medicines: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dgvMedicines.Rows.Add(
+                    m.Id,
+                    m.Name,
+                    m.Quantity,
+                    m.Price.ToString("F2"),
+                    m.ExpiryDate
+                );
             }
         }
 
@@ -79,33 +58,20 @@ namespace Clinic_System.Forms
         {
             if (!ValidateInputs()) return;
 
-            try
+            Medicine medicine = new Medicine
             {
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = @"INSERT INTO Medicines (Name, Quantity, Price, ExpiryDate) 
-                                   VALUES (@name, @qty, @price, @expiry)";
+                Name = txtName.Text.Trim(),
+                Quantity = int.Parse(txtQty.Text.Trim()),
+                Price = decimal.Parse(txtPrice.Text.Trim()),
+                ExpiryDate = txtExpiry.Text.Trim()
+            };
 
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());
-                        cmd.Parameters.AddWithValue("@qty", int.Parse(txtQty.Text.Trim()));
-                        cmd.Parameters.AddWithValue("@price", decimal.Parse(txtPrice.Text.Trim()));
-                        cmd.Parameters.AddWithValue("@expiry", txtExpiry.Text.Trim());
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
+            if (MedicineRepository.AddMedicine(medicine))
+            {
                 MessageBox.Show("Medicine added successfully!", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ClearFields();
                 LoadMedicines();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error adding medicine: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         // ─────────────────────────────────────────
@@ -122,37 +88,24 @@ namespace Clinic_System.Forms
 
             if (!ValidateInputs()) return;
 
-            try
+            Medicine medicine = new Medicine
             {
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = @"UPDATE Medicines 
-                                   SET Name=@name, Quantity=@qty, Price=@price, ExpiryDate=@expiry 
-                                   WHERE Id=@id";
+                Id = selectedMedicineId,
+                Name = txtName.Text.Trim(),
+                Quantity = int.Parse(txtQty.Text.Trim()),
+                Price = decimal.Parse(txtPrice.Text.Trim()),
+                ExpiryDate = txtExpiry.Text.Trim()
+            };
 
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());
-                        cmd.Parameters.AddWithValue("@qty", int.Parse(txtQty.Text.Trim()));
-                        cmd.Parameters.AddWithValue("@price", decimal.Parse(txtPrice.Text.Trim()));
-                        cmd.Parameters.AddWithValue("@expiry", txtExpiry.Text.Trim());
-                        cmd.Parameters.AddWithValue("@id", selectedMedicineId);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
+            if (MedicineRepository.UpdateMedicine(medicine))
+            {
                 MessageBox.Show("Medicine updated successfully!", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ClearFields();
                 LoadMedicines();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error updating medicine: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
+
         // ─────────────────────────────────────────
         // DELETE MEDICINE
         // ─────────────────────────────────────────
@@ -171,29 +124,12 @@ namespace Clinic_System.Forms
 
             if (result == DialogResult.Yes)
             {
-                try
+                if (MedicineRepository.DeleteMedicine(selectedMedicineId))
                 {
-                    using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                    {
-                        conn.Open();
-                        string sql = "DELETE FROM Medicines WHERE Id=@id";
-
-                        using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@id", selectedMedicineId);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
                     MessageBox.Show("Medicine deleted successfully!", "Success",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearFields();
                     LoadMedicines();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error deleting medicine: " + ex.Message, "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

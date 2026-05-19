@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Data.Sqlite;
 using Clinic_System.Database;
+using Clinic_System.Models;
 
 namespace Clinic_System.Forms
 {
@@ -24,48 +25,29 @@ namespace Clinic_System.Forms
         // ─────────────────────────────────────────
         private void LoadPatients(string search = "")
         {
-            try
+            dgvPatients.Rows.Clear();
+            dgvPatients.Columns.Clear();
+
+            dgvPatients.Columns.Add("Id", "ID");
+            dgvPatients.Columns.Add("Name", "Patient Name");
+            dgvPatients.Columns.Add("Age", "Age");
+            dgvPatients.Columns.Add("Contact", "Contact");
+            dgvPatients.Columns.Add("Disease", "Disease");
+
+            dgvPatients.Columns["Id"].Visible = false;
+
+            // All data comes from PatientRepository — no SQL here!
+            List<Patient> patients = PatientRepository.GetAllPatients(search);
+
+            foreach (Patient p in patients)
             {
-                dgvPatients.Rows.Clear();
-                dgvPatients.Columns.Clear();
-
-                dgvPatients.Columns.Add("Id", "ID");
-                dgvPatients.Columns.Add("Name", "Patient Name");
-                dgvPatients.Columns.Add("Age", "Age");
-                dgvPatients.Columns.Add("Contact", "Contact");
-                dgvPatients.Columns.Add("Disease", "Disease");
-
-                dgvPatients.Columns["Id"].Visible = false;
-
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = "SELECT * FROM Patients WHERE Name LIKE @search";
-
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@search", "%" + search + "%");
-
-                        using (SqliteDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                dgvPatients.Rows.Add(
-                                    reader["Id"].ToString(),
-                                    reader["Name"].ToString(),
-                                    reader["Age"].ToString(),
-                                    reader["Contact"].ToString(),
-                                    reader["Disease"].ToString()
-                                );
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading patients: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dgvPatients.Rows.Add(
+                    p.Id,
+                    p.Name,
+                    p.Age,
+                    p.Contact,
+                    p.Disease
+                );
             }
         }
 
@@ -76,33 +58,20 @@ namespace Clinic_System.Forms
         {
             if (!ValidateInputs()) return;
 
-            try
+            Patient patient = new Patient
             {
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = @"INSERT INTO Patients (Name, Age, Contact, Disease) 
-                                   VALUES (@name, @age, @contact, @disease)";
+                Name = txtName.Text.Trim(),
+                Age = int.Parse(txtAge.Text.Trim()),
+                Contact = txtContact.Text.Trim(),
+                Disease = txtDisease.Text.Trim()
+            };
 
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());
-                        cmd.Parameters.AddWithValue("@age", int.Parse(txtAge.Text.Trim()));
-                        cmd.Parameters.AddWithValue("@contact", txtContact.Text.Trim());
-                        cmd.Parameters.AddWithValue("@disease", txtDisease.Text.Trim());
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
+            if (PatientRepository.AddPatient(patient))
+            {
                 MessageBox.Show("Patient added successfully!", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ClearFields();
                 LoadPatients();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error adding patient: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         // ─────────────────────────────────────────
@@ -119,35 +88,21 @@ namespace Clinic_System.Forms
 
             if (!ValidateInputs()) return;
 
-            try
+            Patient patient = new Patient
             {
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    string sql = @"UPDATE Patients 
-                                   SET Name=@name, Age=@age, Contact=@contact, Disease=@disease 
-                                   WHERE Id=@id";
+                Id = selectedPatientId,
+                Name = txtName.Text.Trim(),
+                Age = int.Parse(txtAge.Text.Trim()),
+                Contact = txtContact.Text.Trim(),
+                Disease = txtDisease.Text.Trim()
+            };
 
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());
-                        cmd.Parameters.AddWithValue("@age", int.Parse(txtAge.Text.Trim()));
-                        cmd.Parameters.AddWithValue("@contact", txtContact.Text.Trim());
-                        cmd.Parameters.AddWithValue("@disease", txtDisease.Text.Trim());
-                        cmd.Parameters.AddWithValue("@id", selectedPatientId);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
+            if (PatientRepository.UpdatePatient(patient))
+            {
                 MessageBox.Show("Patient updated successfully!", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 ClearFields();
                 LoadPatients();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error updating patient: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         // ─────────────────────────────────────────
@@ -168,47 +123,12 @@ namespace Clinic_System.Forms
 
             if (result == DialogResult.Yes)
             {
-                try
+                if (PatientRepository.DeletePatient(selectedPatientId))
                 {
-                    // First check if patient has any bills
-                    using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                    {
-                        conn.Open();
-
-                        string checkSql = "SELECT COUNT(*) FROM Bills WHERE PatientId=@id";
-                        using (SqliteCommand cmd = new SqliteCommand(checkSql, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@id", selectedPatientId);
-                            int billCount = Convert.ToInt32(cmd.ExecuteScalar());
-
-                            if (billCount > 0)
-                            {
-                                MessageBox.Show(
-                                    $"Cannot delete this patient!\nThis patient has {billCount} bill(s) on record.\nOnly patients with no billing history can be deleted.",
-                                    "Cannot Delete",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                        }
-
-                        // Safe to delete — no bills found
-                        string deleteSql = "DELETE FROM Patients WHERE Id=@id";
-                        using (SqliteCommand cmd = new SqliteCommand(deleteSql, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@id", selectedPatientId);
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
-
                     MessageBox.Show("Patient deleted successfully!", "Success",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ClearFields();
                     LoadPatients();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error deleting patient: " + ex.Message, "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -270,7 +190,7 @@ namespace Clinic_System.Forms
             }
             if (string.IsNullOrEmpty(txtContact.Text.Trim()))
             {
-                MessageBox.Show("Please enter contact number!", "Warning",
+                MessageBox.Show("Please enter contact!", "Warning",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
