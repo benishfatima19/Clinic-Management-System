@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Data.Sqlite;
 using BCrypt.Net;
 
@@ -83,19 +84,21 @@ namespace Clinic_System.Database
                             cmd.ExecuteNonQuery();
                         }
                     }
-
-                    // Insert default admin if not exists with BCrypt hashed password
-
+                    // Insert default admin with BCrypt hashed password
                     string checkAdmin = "SELECT COUNT(*) FROM Users WHERE Username='admin'";
                     using (SqliteCommand cmd = new SqliteCommand(checkAdmin, conn))
                     {
                         int count = Convert.ToInt32(cmd.ExecuteScalar());
                         if (count == 0)
                         {
+                            // BCrypt hashes the password — never stored as plain text
                             string hashedPassword = BCrypt.Net.BCrypt.HashPassword("1234");
-                            string insertAdmin = $"INSERT INTO Users (Username, Password) VALUES ('admin', '{hashedPassword}')";
+                            string insertAdmin = "INSERT INTO Users (Username, Password) VALUES ('admin', @pwd)";
                             using (SqliteCommand insertCmd = new SqliteCommand(insertAdmin, conn))
+                            {
+                                insertCmd.Parameters.AddWithValue("@pwd", hashedPassword);
                                 insertCmd.ExecuteNonQuery();
+                            }
                         }
                     }
                 }

@@ -13,6 +13,9 @@ namespace Clinic_System.Forms
 {
     public partial class LoginForm : Form
     {
+        // Stores logged in username — accessible from Dashboard
+        public static string LoggedInUser = "";
+
         public LoginForm()
         {
             InitializeComponent();
@@ -30,11 +33,10 @@ namespace Clinic_System.Forms
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            if (ValidateLogin(username, password))
+            // UserRepository handles all database logic — no SQL in form!
+            if (UserRepository.ValidateLogin(username, password))
             {
-                MessageBox.Show("Login Successful! Welcome " + username, "Welcome",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoggedInUser = username;
 
                 DashboardForm dashboard = new DashboardForm();
                 dashboard.Show();
@@ -48,41 +50,7 @@ namespace Clinic_System.Forms
                 txtPassword.Focus();
             }
         }
-
-        /// <summary>
-        /// Validates login by comparing entered password with BCrypt hash stored in database.
-        /// BCrypt.Verify does one-way comparison — password is never decrypted.
-        /// </summary>
-        private bool ValidateLogin(string username, string password)
-        {
-            try
-            {
-                using (SqliteConnection conn = DatabaseHelper.GetConnection())
-                {
-                    conn.Open();
-                    // Get stored hashed password for this username
-                    string sql = "SELECT Password FROM Users WHERE Username=@u";
-
-                    using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@u", username);
-                        string hashedPassword = cmd.ExecuteScalar()?.ToString();
-
-                        if (hashedPassword == null) return false;
-
-                        // BCrypt.Verify compares entered password with stored hash
-                        // It never decrypts — one-way comparison only
-                        return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error: " + ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-        }
+         
         private void btnClear_Click(object sender, EventArgs e)
         {
             txtUsername.Text = "";
