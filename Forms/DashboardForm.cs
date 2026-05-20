@@ -96,7 +96,5 @@ namespace Clinic_System.Forms
                 this.Close();
             }
         }
-
-        
     }
 }

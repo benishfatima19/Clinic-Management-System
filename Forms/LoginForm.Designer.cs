@@ -41,9 +41,9 @@
             // 
             lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitle.ForeColor = Color.White;
-            lblTitle.Location = new Point(125, 36);
+            lblTitle.Location = new Point(83, 30);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(350, 54);
+            lblTitle.Size = new Size(500, 60);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "Clinic Management System";
             lblTitle.TextAlign = ContentAlignment.MiddleCenter;
@@ -75,9 +75,9 @@
             txtUsername.BackColor = Color.White;
             txtUsername.BorderStyle = BorderStyle.FixedSingle;
             txtUsername.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtUsername.Location = new Point(125, 161);
+            txtUsername.Location = new Point(191, 161);
             txtUsername.Name = "txtUsername";
-            txtUsername.Size = new Size(238, 37);
+            txtUsername.Size = new Size(248, 37);
             txtUsername.TabIndex = 3;
             // 
             // txtPassword
@@ -85,10 +85,10 @@
             txtPassword.BackColor = Color.White;
             txtPassword.BorderStyle = BorderStyle.FixedSingle;
             txtPassword.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtPassword.Location = new Point(129, 265);
+            txtPassword.Location = new Point(191, 257);
             txtPassword.Name = "txtPassword";
             txtPassword.PasswordChar = '*';
-            txtPassword.Size = new Size(238, 37);
+            txtPassword.Size = new Size(248, 37);
             txtPassword.TabIndex = 4;
             // 
             // btnLogin
@@ -97,7 +97,7 @@
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLogin.ForeColor = Color.White;
-            btnLogin.Location = new Point(129, 365);
+            btnLogin.Location = new Point(150, 365);
             btnLogin.Name = "btnLogin";
             btnLogin.Size = new Size(128, 50);
             btnLogin.TabIndex = 5;
@@ -110,7 +110,7 @@
             btnClear.BackColor = Color.FromArgb(231, 76, 60);
             btnClear.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClear.ForeColor = Color.White;
-            btnClear.Location = new Point(285, 365);
+            btnClear.Location = new Point(365, 365);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(125, 50);
             btnClear.TabIndex = 6;
@@ -120,6 +120,7 @@
             // 
             // LoginForm
             // 
+            AcceptButton = btnLogin;
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(27, 79, 114);

@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             lblTitle = new Label();
             tabControl1 = new TabControl();
             tabBilling = new TabPage();
@@ -94,36 +94,37 @@
             // dgvBills
             // 
             dgvBills.AllowUserToAddRows = false;
-            dataGridViewCellStyle7.BackColor = Color.FromArgb(214, 234, 248);
-            dgvBills.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(214, 234, 248);
+            dgvBills.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvBills.BackgroundColor = Color.White;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = Color.FromArgb(27, 79, 114);
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle8.ForeColor = Color.White;
-            dataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            dgvBills.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(27, 79, 114);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvBills.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvBills.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvBills.EnableHeadersVisualStyles = false;
-            dgvBills.Location = new Point(6, 124);
+            dgvBills.Location = new Point(0, 186);
             dgvBills.Name = "dgvBills";
             dgvBills.ReadOnly = true;
             dgvBills.RowHeadersVisible = false;
             dgvBills.RowHeadersWidth = 62;
             dgvBills.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvBills.Size = new Size(862, 246);
+            dgvBills.Size = new Size(862, 222);
             dgvBills.TabIndex = 4;
             // 
             // lblTotalRevenue
             // 
             lblTotalRevenue.AutoSize = true;
-            lblTotalRevenue.Location = new Point(617, 373);
+            lblTotalRevenue.Location = new Point(306, 145);
             lblTotalRevenue.Name = "lblTotalRevenue";
             lblTotalRevenue.Size = new Size(231, 28);
             lblTotalRevenue.TabIndex = 3;
             lblTotalRevenue.Text = "Total Revenue: Rs. 0.00";
+            lblTotalRevenue.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnRefreshBills
             // 
@@ -144,7 +145,7 @@
             // 
             txtBillSearch.BorderStyle = BorderStyle.FixedSingle;
             txtBillSearch.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtBillSearch.Location = new Point(318, 17);
+            txtBillSearch.Location = new Point(281, 41);
             txtBillSearch.Name = "txtBillSearch";
             txtBillSearch.Size = new Size(259, 34);
             txtBillSearch.TabIndex = 1;
@@ -182,9 +183,9 @@
             btnRefreshInventory.FlatStyle = FlatStyle.Flat;
             btnRefreshInventory.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnRefreshInventory.ForeColor = Color.White;
-            btnRefreshInventory.Location = new Point(704, 26);
+            btnRefreshInventory.Location = new Point(683, 17);
             btnRefreshInventory.Name = "btnRefreshInventory";
-            btnRefreshInventory.Size = new Size(119, 49);
+            btnRefreshInventory.Size = new Size(117, 43);
             btnRefreshInventory.TabIndex = 2;
             btnRefreshInventory.Text = "Refresh";
             btnRefreshInventory.UseVisualStyleBackColor = false;
@@ -193,26 +194,26 @@
             // dgvInventory
             // 
             dgvInventory.AllowUserToAddRows = false;
-            dataGridViewCellStyle5.BackColor = Color.FromArgb(214, 234, 248);
-            dgvInventory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(214, 234, 248);
+            dgvInventory.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             dgvInventory.BackgroundColor = Color.White;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = Color.FromArgb(27, 79, 114);
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle6.ForeColor = Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            dgvInventory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.FromArgb(27, 79, 114);
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvInventory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvInventory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvInventory.EnableHeadersVisualStyles = false;
-            dgvInventory.Location = new Point(3, 113);
+            dgvInventory.Location = new Point(3, 163);
             dgvInventory.Name = "dgvInventory";
             dgvInventory.ReadOnly = true;
             dgvInventory.RowHeadersVisible = false;
             dgvInventory.RowHeadersWidth = 62;
             dgvInventory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvInventory.Size = new Size(859, 291);
+            dgvInventory.Size = new Size(862, 241);
             dgvInventory.TabIndex = 1;
             // 
             // lblLowStock
@@ -220,7 +221,7 @@
             lblLowStock.AutoSize = true;
             lblLowStock.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblLowStock.ForeColor = Color.FromArgb(27, 79, 114);
-            lblLowStock.Location = new Point(22, 26);
+            lblLowStock.Location = new Point(247, 83);
             lblLowStock.Name = "lblLowStock";
             lblLowStock.Size = new Size(309, 28);
             lblLowStock.TabIndex = 0;

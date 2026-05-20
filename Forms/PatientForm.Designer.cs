@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             lblTitle = new Label();
             lblName = new Label();
             lblAge = new Label();
@@ -78,7 +78,7 @@
             lblAge.AutoSize = true;
             lblAge.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblAge.ForeColor = Color.FromArgb(27, 79, 114);
-            lblAge.Location = new Point(58, 240);
+            lblAge.Location = new Point(58, 225);
             lblAge.Name = "lblAge";
             lblAge.Size = new Size(54, 28);
             lblAge.TabIndex = 2;
@@ -89,7 +89,7 @@
             lblContact.AutoSize = true;
             lblContact.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblContact.ForeColor = Color.FromArgb(27, 79, 114);
-            lblContact.Location = new Point(58, 321);
+            lblContact.Location = new Point(58, 278);
             lblContact.Name = "lblContact";
             lblContact.Size = new Size(90, 28);
             lblContact.TabIndex = 3;
@@ -100,7 +100,7 @@
             lblDisease.AutoSize = true;
             lblDisease.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblDisease.ForeColor = Color.FromArgb(27, 79, 114);
-            lblDisease.Location = new Point(58, 381);
+            lblDisease.Location = new Point(58, 324);
             lblDisease.Name = "lblDisease";
             lblDisease.Size = new Size(89, 28);
             lblDisease.TabIndex = 4;
@@ -111,7 +111,7 @@
             lblSearch.AutoSize = true;
             lblSearch.Font = new Font("Segoe UI", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblSearch.ForeColor = Color.FromArgb(27, 79, 114);
-            lblSearch.Location = new Point(265, 107);
+            lblSearch.Location = new Point(246, 75);
             lblSearch.Name = "lblSearch";
             lblSearch.Size = new Size(80, 28);
             lblSearch.TabIndex = 5;
@@ -121,9 +121,9 @@
             // 
             txtSearch.BorderStyle = BorderStyle.FixedSingle;
             txtSearch.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtSearch.Location = new Point(348, 104);
+            txtSearch.Location = new Point(373, 75);
             txtSearch.Name = "txtSearch";
-            txtSearch.Size = new Size(150, 34);
+            txtSearch.Size = new Size(198, 34);
             txtSearch.TabIndex = 6;
             txtSearch.TextChanged += txtSearch_TextChanged;
             // 
@@ -131,36 +131,36 @@
             // 
             txtName.BorderStyle = BorderStyle.FixedSingle;
             txtName.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtName.Location = new Point(211, 179);
+            txtName.Location = new Point(211, 169);
             txtName.Name = "txtName";
-            txtName.Size = new Size(150, 34);
+            txtName.Size = new Size(212, 34);
             txtName.TabIndex = 7;
             // 
             // txtAge
             // 
             txtAge.BorderStyle = BorderStyle.FixedSingle;
             txtAge.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtAge.Location = new Point(211, 240);
+            txtAge.Location = new Point(211, 223);
             txtAge.Name = "txtAge";
-            txtAge.Size = new Size(150, 34);
+            txtAge.Size = new Size(212, 34);
             txtAge.TabIndex = 8;
             // 
             // txtContact
             // 
             txtContact.BorderStyle = BorderStyle.FixedSingle;
             txtContact.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtContact.Location = new Point(211, 318);
+            txtContact.Location = new Point(211, 272);
             txtContact.Name = "txtContact";
-            txtContact.Size = new Size(150, 34);
+            txtContact.Size = new Size(212, 34);
             txtContact.TabIndex = 9;
             // 
             // txtDisease
             // 
             txtDisease.BorderStyle = BorderStyle.FixedSingle;
             txtDisease.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtDisease.Location = new Point(211, 381);
+            txtDisease.Location = new Point(211, 322);
             txtDisease.Name = "txtDisease";
-            txtDisease.Size = new Size(150, 34);
+            txtDisease.Size = new Size(212, 34);
             txtDisease.TabIndex = 10;
             // 
             // btnAdd
@@ -226,17 +226,17 @@
             // dgvPatients
             // 
             dgvPatients.AllowUserToAddRows = false;
-            dataGridViewCellStyle5.BackColor = Color.FromArgb(214, 234, 248);
-            dgvPatients.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(214, 234, 248);
+            dgvPatients.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             dgvPatients.BackgroundColor = Color.White;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = Color.FromArgb(27, 79, 114);
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle6.ForeColor = Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            dgvPatients.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.FromArgb(27, 79, 114);
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvPatients.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvPatients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvPatients.EnableHeadersVisualStyles = false;
             dgvPatients.Location = new Point(2, 436);
