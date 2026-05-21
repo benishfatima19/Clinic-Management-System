@@ -1,0 +1,42 @@
+-- Clinic Management System Database Script
+-- Run this to recreate the database structure
+
+CREATE TABLE IF NOT EXISTS Users (
+    Id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    Username TEXT NOT NULL UNIQUE,
+    Password TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Medicines (
+    Id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name       TEXT NOT NULL,
+    Quantity   INTEGER NOT NULL DEFAULT 0,
+    Price      REAL NOT NULL DEFAULT 0,
+    ExpiryDate TEXT
+);
+
+CREATE TABLE IF NOT EXISTS Patients (
+    Id      INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name    TEXT NOT NULL,
+    Age     INTEGER,
+    Contact TEXT,
+    Disease TEXT
+);
+
+CREATE TABLE IF NOT EXISTS Bills (
+    Id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    PatientId INTEGER NOT NULL,
+    Date      TEXT NOT NULL,
+    Total     REAL NOT NULL DEFAULT 0,
+    FOREIGN KEY (PatientId) REFERENCES Patients(Id)
+);
+
+CREATE TABLE IF NOT EXISTS BillItems (
+    Id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    BillId     INTEGER NOT NULL,
+    MedicineId INTEGER NOT NULL,
+    Quantity   INTEGER NOT NULL,
+    Price      REAL NOT NULL,
+    FOREIGN KEY (BillId)     REFERENCES Bills(Id),
+    FOREIGN KEY (MedicineId) REFERENCES Medicines(Id)
+);
