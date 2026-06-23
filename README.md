@@ -1,8 +1,11 @@
 # 🏥 Clinic Management System
 
-A desktop application built in C# Windows Forms for managing clinic operations — medicine inventory, patient records, and billing — all from a single application.
+A desktop application built in C# Windows Forms for managing 
+clinic operations — medicine inventory, patient records, and 
+billing — all from a single application.
 
-Developed as a semester project for Visual Programming (CS-412) at University of Agriculture Faisalabad.
+Developed as a semester project for Visual Programming (CS-412) 
+at University of Agriculture Faisalabad.
 
 ## Features
 
@@ -10,8 +13,7 @@ Developed as a semester project for Visual Programming (CS-412) at University of
 - 💊 Medicine inventory management with stock tracking
 - 👤 Patient record management with search
 - 🧾 Automated billing system with auto-calculated totals
-- 📊 Dashboard with live statistics (medicines, patients, 
-  bills, revenue, low stock alerts)
+- 📊 Dashboard with live statistics (medicines, patients, bills, revenue, low stock alerts)
 - 📈 Reports with billing history and color-coded inventory status
 
 ## Tech Stack
@@ -26,16 +28,14 @@ Developed as a semester project for Visual Programming (CS-412) at University of
 ## Architecture
 
 The project follows a clean 3-tier architecture:
-Forms/          → UI layer (zero SQL — calls Repository methods only)
 
-Database/       → DatabaseHelper + Repository classes (all SQL here)
+```
+Forms/      → UI layer (zero SQL — calls Repository methods only)
+Database/   → DatabaseHelper + Repository classes (all SQL here)
+Models/     → Simple data carrier classes
+```
 
-Models/         → Simple data carrier classes
-
-This separation means form files have no direct database 
-queries — all data access logic lives in dedicated Repository 
-classes (UserRepository, MedicineRepository, PatientRepository, 
-BillRepository).
+This separation means form files have no direct database queries — all data access logic lives in dedicated Repository classes (UserRepository, MedicineRepository, PatientRepository, BillRepository).
 
 ## How to Run
 
@@ -61,12 +61,7 @@ BillRepository).
 
 ## What I Learned
 
-The most valuable part of this project wasn't writing the CRUD 
-operations — it was refactoring the entire codebase midway 
-through development to follow proper Repository pattern instead 
-of having SQL scattered across form files. This taught me a lot 
-about separation of concerns and why clean architecture matters 
-even in smaller projects.
+The most valuable part of this project wasn't writing the CRUD operations — it was refactoring the entire codebase midway through development to follow proper Repository pattern instead of having SQL scattered across form files. This taught me a lot about separation of concerns and why clean architecture matters even in smaller projects.
 
 ## Author
 
